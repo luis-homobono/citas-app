@@ -47,7 +47,8 @@ CORE_APPS = [
 ]
 
 OWN_APPS = [
-    'users.apps.UsersConfig'
+    'users.apps.UsersConfig',
+    'medical_appointments.apps.MedicalAppointmentsConfig',
 ]
 
 THIRD_PARTY_APPS = []
