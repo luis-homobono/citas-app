@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Citas - Clínica</title>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #f78da7;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .form-container, .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        a {
+            text-decoration: none;
+        }
+        button, a {
+            background-color: #f78da7;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover, a:hover {
+            background-color: #ec9fb2;
+        }
+        .button_edit {
+            background-color: #f78da7;
+            color: white
+        }
+        .button_edit:hover {
+            background-color: #ec9fb2;
+        }
+        .button_delete {
+            background-color: #eb4325;
+            color: black
+        }
+        .button_delete:hover {
+            background-color: #eb5d25;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>Control de Citas - Clínica</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Formulario para Crear/Editar Citas -->
+        <div class="form-container">
+            <h2>Nueva Cita</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <label>Fecha y Hora:</label>
+                <input type="datetime-local" name="fecha_hora"><br><br>
+
+                <label>Paciente:</label>
+                <input type="text" name="paciente"><br><br>
+
+                <label>Tipo de Cita:</label>
+                <select name="tipo">
+                    {% for type in appointment_type %}
+                        <option value={{ type }}>{{ type }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label>Nombre del Médico:</label>
+                <input type="text" name="medico"><br><br>
+
+                <label>Número de Cita:</label>
+                <input type="number" name="numero_cita" disabled placeholder={{ booking_id }}><br><br>
+
+                <button type="submit">Guardar Cita</button>
+            </form>
+        </div>
+
+        <!-- Listado de Citas Activas -->
+        <div class="table-container">
+            <h2>Citas Activas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Paciente</th>
+                        <th>Tipo</th>
+                        <th>Médico</th>
+                        <th>Número</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in booking_active %}
+                        <tr>
+                            <td>{{ book.appointment_date }}</td>
+                            <td>{{ book.patient }}</td>
+                            <td>{{ book.appointment_type }}</td>
+                            <td>{{ book.doctor_name }}</td>
+                            <td>{{ book.appointment_number }}</td>
+                            <td>
+                                <a href="{{book.id}}" class="button_edit">Editar</a>
+                                <a href="delete/{{book.id}}" class="button_delete">Borrar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Listado de Citas Eliminadas -->
+        <div class="table-container">
+            <h2>Citas Eliminadas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Paciente</th>
+                        <th>Tipo</th>
+                        <th>Médico</th>
+                        <th>Número</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in booking_no_active %}
+                        <tr>
+                            <td>{{ book.appointment_date }}</td>
+                            <td>{{ book.patient }}</td>
+                            <td>{{ book.appointment_type }}</td>
+                            <td>{{ book.doctor_name }}</td>
+                            <td>{{ book.appointment_number }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

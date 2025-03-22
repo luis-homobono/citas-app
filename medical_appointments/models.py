@@ -2,8 +2,6 @@ import uuid
 from enum import Enum
 from django.db import models
 
-# from users.models import User
-
 
 class MedicalAppointment(models.Model):
     class AppointmentTypes(models.TextChoices):
@@ -14,9 +12,9 @@ class MedicalAppointment(models.Model):
         LABORATORIO = 'L', 'Laboratorio'
 
     id = models.AutoField(verbose_name='ID', primary_key=True,)
-    patient = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Paciente')
+    patient = models.CharField(verbose_name='Paciente', max_length=150)
     appointment_type = models.CharField(verbose_name='Tipo de Cita', max_length=50, choices=AppointmentTypes.choices)
-    doctor_number = models.IntegerField(verbose_name='Número de médico que asiste')
+    doctor_name = models.CharField(verbose_name='Nombre de médico que asiste', max_length=100)
     appointment_date = models.DateTimeField(verbose_name='Fecha y hora de la Cita')
     status = models.CharField(verbose_name="Estatus de Cita", default="Activa", max_length=100)
     is_active = models.BooleanField(verbose_name="Activo", default=True)
