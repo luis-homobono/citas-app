@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 from medical_appointments.models import MedicalAppointment
 
-
+@login_required(login_url='/login/')
 def booking(request):
     if request.method == 'POST':
         data = request.POST
@@ -31,6 +32,7 @@ def booking(request):
 
     return render(request, 'booking/booking.html', context=context)
 
+@login_required(login_url='/login/')
 def booking_edit(request, id):
     if request.method == 'POST':
         data = request.POST
@@ -51,6 +53,7 @@ def booking_edit(request, id):
     }
     return render(request, 'booking/booking_edit.html', context=context)
 
+@login_required(login_url='/login/')
 def booking_delete(request, id):
     booking = get_object_or_404(MedicalAppointment, id=id)
     if request.method == 'POST':
