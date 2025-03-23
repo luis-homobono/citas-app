@@ -79,6 +79,7 @@
             <h1>Control de Citas - Clínica</h1>
         </div>
         {% if user.is_authenticated %}
+            <p>{{ request.user }}</p>
             <button><a href="{% url 'logout' %}">Sign Out </a></button>
         {% else %}
             <button><a href="{% url 'login' %}">Sign In</a></button>

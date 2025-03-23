@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from medical_appointments.models import MedicalAppointment
 
 
-def home_page(request):
+def booking(request):
     if request.method == 'POST':
         data = request.POST
         booking = MedicalAppointment.objects.create(
